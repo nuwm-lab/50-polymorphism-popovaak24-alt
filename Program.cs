@@ -29,12 +29,13 @@ namespace Lab4
         // Метод для задання елементів з масиву (для тестування)
         public virtual void SetElements(double[] values)
         {
-            if (values.Length == DIMENSION)
+            if (values is null)
+                throw new ArgumentNullException(nameof(values));
+            if (values.Length != DIMENSION)
+                throw new ArgumentException($"Очікується масив довжини {DIMENSION}.", nameof(values));
+            for (int i = 0; i < DIMENSION; i++)
             {
-                for (int i = 0; i < DIMENSION; i++)
-                {
-                    _elements[i] = values[i];
-                }
+                _elements[i] = values[i];
             }
         }
         // Віртуальний метод для виведення вектора на екран
@@ -89,14 +90,15 @@ namespace Lab4
         // Метод для задання елементів з двовимірного масиву (для тестування)
         public void SetElements(double[,] values)
         {
-            if (values.GetLength(0) == DIMENSION && values.GetLength(1) == DIMENSION)
+            if (values is null)
+                throw new ArgumentNullException(nameof(values));
+            if (values.GetLength(0) != DIMENSION || values.GetLength(1) != DIMENSION)
+                throw new ArgumentException($"Очікується матриця розміру {DIMENSION}x{DIMENSION}.", nameof(values));
+            for (int i = 0; i < DIMENSION; i++)
             {
-                for (int i = 0; i < DIMENSION; i++)
+                for (int j = 0; j < DIMENSION; j++)
                 {
-                    for (int j = 0; j < DIMENSION; j++)
-                    {
-                        _matrix[i, j] = values[i, j];
-                    }
+                    _matrix[i, j] = values[i, j];
                 }
             }
         }
@@ -168,7 +170,8 @@ namespace Lab4
             Console.WriteLine("Створюємо масив покажчиків базового типу Vector4D,");
             Console.WriteLine("але фактичний тип об'єкта визначається динамічно!\n");
             // Масив покажчиків на базовий клас (тип невідомий на етапі компіляції)
-            Vector4D[] objects = new Vector4D[4];
+            const int DEMO_COUNT = 4;
+            Vector4D[] objects = new Vector4D[DEMO_COUNT];
             // Динамічне створення різних типів об'єктів
             Console.WriteLine("Створюємо об'єкти динамічно (тип визначається під час виконання):\n");
             // Об'єкт 1: Vector4D
@@ -353,4 +356,3 @@ namespace Lab4
         }
     }
 }
-
